@@ -1,0 +1,60 @@
+AllCops:
+  Exclude:
+    - tmp/**/*
+
+Rails:
+  Enabled: true
+
+# We prefer having assignments inside if-s
+Lint/AssignmentInCondition:
+  Enabled: false
+
+# Longer lines is awesome
+Metrics/LineLength:
+  Max: 160
+
+# Having every class documented is too much
+Style/Documentation:
+  Enabled: false
+
+# We do love empty lines
+Layout/EmptyLines:
+  Enabled: false
+
+Layout/EmptyLinesAroundArguments:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+# We do love complex code
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+# This is AR-only cop
+Rails/FindEach:
+  Enabled: false
+
+Rails/CreateTableWithTimestamps:
+  Enabled: false

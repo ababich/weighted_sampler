@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'weighted_sampler/version'
 
 module WeightedSampler
@@ -47,7 +49,12 @@ module WeightedSampler
 
     def array_to_ranges(array)
       start = 0.0
-      ranges = array.map { |v| p_start = start; start += v; (p_start...v + p_start) }
+      ranges = array.map do |v|
+        p_start = start
+        start += v
+
+        (p_start...v + p_start)
+      end
 
       raise 'normalized probabilities total is not 1' if start - 1.0 > ERROR_ALLOWANCE
 
