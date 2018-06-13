@@ -3,6 +3,9 @@ image: ruby
 stages:
   - test
 
+before_script:
+  - bundle install
+
 ruby2.3:
   image: ruby:2.3-alpine
   script:
