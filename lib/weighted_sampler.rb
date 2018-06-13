@@ -18,16 +18,17 @@ module WeightedSampler
       elsif enum.is_a?(Array)
         @p_ranges = normalized_ranges(enum, skip_normalization)
         @keys = [*0...enum.size]
-      else
-        raise ArgumentError, 'input structure must be a Hash or an Array'
       end
+
+      return unless @p_ranges.nil? || @keys.nil? || @keys.empty?
+      raise ArgumentError, 'input structure must be a non-empty Hash or Array'
     end
 
     def sample
       pick = @random ? @random.rand : rand
 
       idx = @p_ranges.index { |range| range.include? pick }
-      @keys[idx]
+      @keys[idx] if idx
     end
 
     private
@@ -56,14 +57,14 @@ module WeightedSampler
         (p_start...v + p_start)
       end
 
-      raise 'normalized probabilities total is not 1' if start - 1.0 > ERROR_ALLOWANCE
+      raise 'normalized probabilities total is not 1' if (start - 1.0).abs > ERROR_ALLOWANCE
 
       ranges
     end
 
   end
 
-  def self.sample(enum, seed: nil, skip_normalization: false)
-    Base.new(enum, seed: seed, skip_normalization: skip_normalization).sample
+  def self.sample(enum, skip_normalization: false)
+    Base.new(enum, skip_normalization: skip_normalization).sample
   end
 end
