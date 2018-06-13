@@ -5,16 +5,19 @@ stages:
 
 before_script:
   - bundle install
-  - rspec
 
 ruby2.3:
   image: ruby:2.3
+  script: rspec
 
 ruby2.4:
   image: ruby:2.4
+  script: rspec
 
 ruby2.5:
   image: ruby:2.5
+  script: rspec
 
 ruby2.6-rc:
   image: ruby:2.6-rc
+  script: rspec
