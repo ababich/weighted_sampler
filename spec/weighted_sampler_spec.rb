@@ -193,4 +193,36 @@ RSpec.describe WeightedSampler do
       end
     end
   end
+
+  context 'private method' do
+    let(:array) { [1] }
+    let(:sampler) { WeightedSampler::Base.new(array) }
+
+    context 'normalized_ranges' do
+      it { expect { sampler.send(:normalized_ranges, [], false) }.to raise_error(RuntimeError, /total is not 1/) }
+      it { expect { sampler.send(:normalized_ranges, [1, -1], false) }.to raise_error(ArgumentError, /only positive/) }
+
+      it { expect(sampler.send(:normalized_ranges, [1, 1], false)).to eq([(0...0.5), (0.5...1)]) }
+      it { expect(sampler.send(:normalized_ranges, [1, 0], true)).to eq([(0...1), (1...1)]) }
+    end
+
+
+    context 'normalize_probabilities' do
+      it { expect(sampler.send(:normalize_probabilities, [])).to eq([]) }
+      it { expect(sampler.send(:normalize_probabilities, [1])).to eq([1]) }
+      it { expect(sampler.send(:normalize_probabilities, [1, 1])).to eq([0.5, 0.5]) }
+      it { expect(sampler.send(:normalize_probabilities, [1, 9])).to eq([0.1, 0.9]) }
+      it { expect(sampler.send(:normalize_probabilities, [1] * 100)).to eq([1.0 / 100] * 100) }
+      it { expect(sampler.send(:normalize_probabilities, [0.001, 0.199])).to eq([0.005, 0.995]) }
+    end
+
+    context 'array_to_ranges' do
+      it { expect { sampler.send(:array_to_ranges, []) }.to raise_error(RuntimeError, /total is not 1/) }
+      it { expect { sampler.send(:array_to_ranges, [1, 1]) }.to raise_error(RuntimeError, /total is not 1/) }
+
+      it { expect(sampler.send(:array_to_ranges, [0.5, 0.5])).to eq([(0...0.5), (0.5...1)]) }
+      it { expect(sampler.send(:array_to_ranges, [1, 0])).to eq([(0...1), (1...1)]) }
+      it { expect(sampler.send(:array_to_ranges, [0, 1])).to eq([(0...0), (0...1)]) }
+    end
+  end
 end
