@@ -3,7 +3,7 @@ image: ruby
 stages:
   - test
 
-2.3:
+ruby2.3:
   image: ruby:2.3-alpine
   script:
     - rspec
