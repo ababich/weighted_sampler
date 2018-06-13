@@ -22,17 +22,100 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Module or sampler instance modes available
+
+### Module
+
+```ruby
+>> WeightedSampler.sample([P0, P1, ...])
+=> INDEX
+>> WeightedSampler.sample({K0 => P0, K1 => P1, ...})
+=> Ki
+```
+
+#### Input as an Array
+
+You can provide `Array` of probabilities in a form of weights for each option.
+
+Equal probabilities: `[50, 50]` or `[1, 1]` or `[0.5, 0.5]`
+
+Different probabilities: `[99, 1]`, or `[0.001, 0.1]` (index 1 is 100x times more likely to be chosen than 0)
+
+If your input probabilies are not normalized `WeightedSampler` will do it for you
+
+`OUTPUT` will be an index of selected value, so that you can match it to your more complex data structure
+
+#### Input as an Hash
+
+To simplify dome workflows you can provide `Hash` structure in a way
+
+```ruby
+{ K0 => P0, ...}
+{ a: 1, b: 1, c: 2} # c has 0.5, a and b - 0.25
+{ 0 => 50, 150 => 1} # 105 key is 50 times less probable to be picked
+```
+
+where `values` are probabilities with requirements similar to `Array` approach
+
+`OUTPUT` in this case will be picked `key`
+
+### Class (`::Base`)
+
+Class is the *recommended* way to use of sampler becuase it's performance is ~10x better than Module
+
+You need to initialize sampler:
+
+```ruby
+sampler = WeightedSampler::Base.new([P0, P1, ...])
+# OR
+sampler = WeightedSampler::Base.new({K0 => P0, K1 => P1, ...})
+```
+
+after that you can get samples via
+
+`sampler.sample # => index (for Array) or key (for Hash)`
+
+Input parameter to initialization of an instance are similar to Module use case.
+
+Plus, you can you `seed` option for repeatable results
+
+### Options
+
+#### `skip_normalization`
+**You do not have to normalize input probabilities**
+
+But for some reason you may want to normalize yourself, for this
+you have an option `skip_normalization`
+
+```ruby
+WeightedSampler.sample([...], skip_normalization: true)
+WeightedSampler.sample({...}, skip_normalization: true)
+```
+
+if we will not be able to sum provided probabilities into `1` you'll get `RuntimeError` exception with some information about this
+
+#### `seed` (¡ Class use case only !)
+
+If you need to get repeatable sequence of samples you can initialize sampler with seed Integer (similar to ruby`s [Random](https://ruby-doc.org/core/Random.html#method-c-new)
+
+```ruby
+WeightedSampler::Base.new([...], seed: SEED)
+WeightedSampler::Base.new([...], seed: SEED)
+```
+
+Please, note that if `seed` is not provided, sampler will use generic `rand` functionality without any seed initialization
+
+### Performance
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/weighted_sampler. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://gitlab.com/[USERNAME]/weighted_sampler. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
