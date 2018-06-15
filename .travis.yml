@@ -6,4 +6,4 @@ rvm:
   - 2.5
   - jruby-head
 script:
-  - rspec
+  - bundle exec rspec
