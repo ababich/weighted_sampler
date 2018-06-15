@@ -110,20 +110,46 @@ Please, note that if `seed` is not provided, sampler will use generic `rand` fun
 
 ### Performance
 
+Once initialized, solution complexity is `O(n)`. [`Array#index`](https://ruby-doc.org/core/Array.html#method-i-index) is used to find a `rand` match to intervals (see [Math](#Math) section below).
+
+Perfromance of this approach is acceptable.
+
+### Math
+
+Consider normalized probabilities `P0, P1, .., Pn, 𝚺Pi = 1, 0 <= i <= n`
+
+To select random index `i` with these probabilities we convert them into half-open intervals `[0, P0)`, `[P0, P1)`, `[P0+P1, P2)` ... `[𝚺Pi, 1), 0 <= i < n` and place on a half-open interval `[0, 1)`
+
+```
+[<- P1 ->)[<-  P2  ->)    ...         [<-   Pn   ->)
+[--------------------------------------------------)
+                    ^- rand (sample pick)
+```
+
+As you can see any random value from `[0, 1)` will hin into one of the half-open intervals with probability equal to the "length" of the interval
+
+`rand` (seeded or not) will does exactly what is needed and returns a value in the same half-open interval `[0, 1)`
+
+*NOTE about Terminilogy and beauty in Ruby:* in ruby [Range](https://ruby-doc.org/core/Range.html) class with `...`   definition is equivalent to [half-open interval in the end](https://en.wikipedia.org/wiki/Interval_(mathematics)#Terminology) (i.e. `[0...1]` in Ruby is `[0, 1)` in math
+
+*NOTE about precision and computer algebra ugliness:* in programming we cannot be sure that `𝚺Pi` will end up exactly equivalent to 1. And I do not like idea to use Ruby's [Rational](https://ruby-doc.org/core/Rational.html) due to performance implications and not much benefitss here
+
+That's why `ERROR_ALLOWANCE = 10**-8` is accepted in normalization logic in WeightedSampler
+
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org)
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://gitlab.com/[USERNAME]/weighted_sampler. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://gitlab.com/[USERNAME]/weighted_sampler. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT)
 
 ## Code of Conduct
 
-Everyone interacting in the WeightedSampler project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/weighted_sampler/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the WeightedSampler project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/weighted_sampler/blob/master/CODE_OF_CONDUCT.md)
