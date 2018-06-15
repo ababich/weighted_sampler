@@ -12,7 +12,6 @@ Gem::Specification.new do |spec|
   spec.email         = ['oleksiy@oleksiy.od.ua']
 
   spec.summary       = 'Weighted Sampler helps you to pick a random samples from a collection with defined probabilities or weights'
-  '
   spec.description   = %(
     Weighted Sampler helps you to pick a random samples from a collection with defined probabilities or weights
 
