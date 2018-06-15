@@ -13,10 +13,11 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Weighted Sampler helps you to pick a random samples from a collection with defined probabilities or weights'
   spec.description   = %(
-    Weighted Sampler helps you to pick a random samples from a collection with defined probabilities or weights
-
+    Weighted Sampler helps you to pick a random samples from a collection with defined probabilities or weights.
     You can pass an Array or a Hash with desired probabilities
-    and use Module or Class API to pick samples
+    and use Module or Class API to pick samples.
+
+    Please, see documentation in the repo https://gitlab.com/alexey_b/weighted_sampler
   )
   spec.homepage      = 'https://gitlab.com/alexey_b/weighted_sampler'
   spec.license       = 'MIT'
