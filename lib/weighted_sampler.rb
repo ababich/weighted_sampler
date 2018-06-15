@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'weighted_sampler/version'
-require 'pry'
 module WeightedSampler
 
   # sum of floats are never stable enough to guarantee exact equality to 1
