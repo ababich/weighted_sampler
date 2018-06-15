@@ -44,8 +44,8 @@ RSpec.describe WeightedSampler do
     end
 
     context 'distributions' do
-      let(:test_count) { 10_000 }
-      let(:delta) { 0.01 }
+      let(:test_count) { 100_000 }
+      let(:delta) { 0.005 }
 
       let(:h_samples) { a_samples.map { |e| [e, e] }.to_h }
 

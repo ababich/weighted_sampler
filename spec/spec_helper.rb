@@ -3,7 +3,6 @@
 require 'bundler/setup'
 require 'weighted_sampler'
 
-require 'pry'
 require 'simplecov'
 SimpleCov.start
 
