@@ -121,10 +121,10 @@ To select random index `i` with these probabilities we convert them into half-op
 ```
 [<- P1 ->)[<-  P2  ->)    ...         [<-   Pn   ->)
 [--------------------------------------------------)
-                    ^- rand (sample pick)
+0                   ^- rand (sample pick)          1
 ```
 
-As you can see any random value from `[0, 1)` will hin into one of the half-open intervals with probability equal to the "length" of the interval
+As you can see any random value from `[0, 1)` will hit into one of the half-open intervals with probability equal to the "length" of the interval
 
 `rand` (seeded or not) will does exactly what is needed and returns a value in the same half-open interval `[0, 1)`
 
