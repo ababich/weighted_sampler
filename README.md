@@ -4,7 +4,7 @@ Main repository is https://gitlab.com/alexey_b/weighted_sampler
 
 Gitlab [![pipeline status](https://gitlab.com/alexey_b/weighted_sampler/badges/master/pipeline.svg)](https://gitlab.com/alexey_b/weighted_sampler/commits/master)[![coverage report](https://gitlab.com/alexey_b/weighted_sampler/badges/master/coverage.svg)](https://gitlab.com/alexey_b/weighted_sampler/commits/master) Travis [![Build Status](https://travis-ci.org/ababich/weighted_sampler.svg?branch=master)](https://travis-ci.org/ababich/weighted_sampler)
 
-This gem allows you to get random samples from a collection with defined probabilities
+Weighted Sampler helps you to pick a random samples from a collection with defined probabilities or weights
 
 
 ## Installation
