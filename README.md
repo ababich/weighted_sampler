@@ -112,8 +112,6 @@ Please, note that if `seed` is not provided, sampler will use generic `rand` fun
 
 Once initialized, solution complexity is `O(n)`. [`Array#index`](https://ruby-doc.org/core/Array.html#method-i-index) is used to find a `rand` match to intervals (see [Math](#Math) section below).
 
-Perfromance of this approach is acceptable.
-
 ### Math
 
 Consider normalized probabilities `P0, P1, .., Pn, 𝚺Pi = 1, 0 <= i <= n`
