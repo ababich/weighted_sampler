@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'weighted_sampler/version'
+require 'pry'
+
 module WeightedSampler
 
   # sum of floats are never stable enough to guarantee exact equality to 1
@@ -12,33 +14,34 @@ module WeightedSampler
       @random = Random.new(seed) unless seed.nil?
 
       if enum.is_a?(Hash)
-        @p_ranges = normalized_ranges(enum.values, skip_normalization)
+        @p_margins = normalized_margins(enum.values, skip_normalization)
         @keys = enum.keys
       elsif enum.is_a?(Array)
-        @p_ranges = normalized_ranges(enum, skip_normalization)
+        @p_margins = normalized_margins(enum, skip_normalization)
         @keys = [*0...enum.size]
       end
 
-      return unless @p_ranges.nil? || @keys.nil? || @keys.empty?
+      return unless @p_margins.nil? || @keys.nil? || @keys.empty?
+
       raise ArgumentError, 'input structure must be a non-empty Hash or Array'
     end
 
     def sample
       pick = @random ? @random.rand : rand
 
-      idx = @p_ranges.index { |range| range.include? pick }
-      @keys[idx] if idx
+      idx = @p_margins.find_index { |margin| pick < margin }
+      idx ||= @p_margins.count - 1 # safe assignment if last margin was not good enough
+
+      @keys[idx]
     end
 
     private
 
-    def normalized_ranges(array, skip_normalization)
+    def normalized_margins(array, skip_normalization)
       raise ArgumentError, 'weights can be only positive' if array.any?(&:negative?)
 
-      probabilities = array
-      probabilities = normalize_probabilities(probabilities) unless skip_normalization
-
-      array_to_ranges probabilities
+      probabilities = skip_normalization ? array : normalize_probabilities(array)
+      incremental_margins probabilities
     end
 
     def normalize_probabilities(array)
@@ -47,18 +50,20 @@ module WeightedSampler
       array.map { |el| el / sum }
     end
 
-    def array_to_ranges(array)
+    # convert probs like [0.1, 0.2, 0.3, 0.4]
+    # to incremental margins [0.1, 0.3, 0.6, 1.0]
+    def incremental_margins(array)
       start = 0.0
-      ranges = array.map do |v|
-        p_start = start
-        start += v
+      margins = array.map do |v|
+        res = v + start
+        start = res
 
-        (p_start...v + p_start)
+        res
       end
 
       raise 'normalized probabilities total is not 1' if (start - 1.0).abs > ERROR_ALLOWANCE
 
-      ranges
+      margins
     end
 
   end

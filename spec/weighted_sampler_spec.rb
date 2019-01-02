@@ -44,7 +44,7 @@ RSpec.describe WeightedSampler do
     end
 
     context 'distributions' do
-      let(:test_count) { 100_000 }
+      let(:test_count) { 200_000 }
       let(:delta) { 0.005 }
 
       let(:h_samples) { a_samples.map { |e| [e, e] }.to_h }
@@ -140,8 +140,8 @@ RSpec.describe WeightedSampler do
       end
 
       context 'seed repeatability' do
-        let(:samples) { [1] * 100 }
-        let(:test_count) { 1000 }
+        let(:samples) { [1] * 200 }
+        let(:test_count) { 5000 }
         context 'without seed different' do
           it 'for module' do
             picks0 = (0..test_count).to_a.map { WeightedSampler.sample(samples) }
@@ -198,12 +198,12 @@ RSpec.describe WeightedSampler do
     let(:array) { [1] }
     let(:sampler) { WeightedSampler::Base.new(array) }
 
-    context 'normalized_ranges' do
-      it { expect { sampler.send(:normalized_ranges, [], false) }.to raise_error(RuntimeError, /total is not 1/) }
-      it { expect { sampler.send(:normalized_ranges, [1, -1], false) }.to raise_error(ArgumentError, /only positive/) }
+    context 'normalized_margins' do
+      it { expect { sampler.send(:normalized_margins, [], false) }.to raise_error(RuntimeError, /total is not 1/) }
+      it { expect { sampler.send(:normalized_margins, [1, -1], false) }.to raise_error(ArgumentError, /only positive/) }
 
-      it { expect(sampler.send(:normalized_ranges, [1, 1], false)).to eq([(0...0.5), (0.5...1)]) }
-      it { expect(sampler.send(:normalized_ranges, [1, 0], true)).to eq([(0...1), (1...1)]) }
+      it { expect(sampler.send(:normalized_margins, [1, 1], false)).to eq([0.5, 1]) }
+      it { expect(sampler.send(:normalized_margins, [1, 0], true)).to eq([1, 1]) }
     end
 
 
@@ -217,12 +217,12 @@ RSpec.describe WeightedSampler do
     end
 
     context 'array_to_ranges' do
-      it { expect { sampler.send(:array_to_ranges, []) }.to raise_error(RuntimeError, /total is not 1/) }
-      it { expect { sampler.send(:array_to_ranges, [1, 1]) }.to raise_error(RuntimeError, /total is not 1/) }
+      it { expect { sampler.send(:incremental_margins, []) }.to raise_error(RuntimeError, /total is not 1/) }
+      it { expect { sampler.send(:incremental_margins, [1, 1]) }.to raise_error(RuntimeError, /total is not 1/) }
 
-      it { expect(sampler.send(:array_to_ranges, [0.5, 0.5])).to eq([(0...0.5), (0.5...1)]) }
-      it { expect(sampler.send(:array_to_ranges, [1, 0])).to eq([(0...1), (1...1)]) }
-      it { expect(sampler.send(:array_to_ranges, [0, 1])).to eq([(0...0), (0...1)]) }
+      it { expect(sampler.send(:incremental_margins, [0.5, 0.5])).to eq([0.5, 1]) }
+      it { expect(sampler.send(:incremental_margins, [1, 0])).to eq([1, 1]) }
+      it { expect(sampler.send(:incremental_margins, [0, 1])).to eq([0, 1]) }
     end
   end
 end

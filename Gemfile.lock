@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    weighted_sampler (1.0.3)
+    weighted_sampler (1.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -52,4 +52,4 @@ DEPENDENCIES
   weighted_sampler!
 
 BUNDLED WITH
-   1.16.2
+   1.17.1

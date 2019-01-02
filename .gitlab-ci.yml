@@ -18,8 +18,8 @@ ruby2.5:
   image: ruby:2.5
   script: rspec
 
-ruby2.6-rc:
-  image: ruby:2.6-rc
+ruby2.6:
+  image: ruby:2.6
   script: rspec
 
 jruby:
