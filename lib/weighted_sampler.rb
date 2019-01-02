@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'weighted_sampler/version'
-require 'pry'
+# require 'pry'
 
 module WeightedSampler
 
