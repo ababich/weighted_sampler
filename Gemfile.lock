@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    weighted_sampler (1.1.0)
+    weighted_sampler (1.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -44,7 +44,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 2.1)
   pry-byebug
   rake (~> 10.0)
   rspec (~> 3.0)
@@ -52,4 +52,4 @@ DEPENDENCIES
   weighted_sampler!
 
 BUNDLED WITH
-   1.17.1
+   2.1.4

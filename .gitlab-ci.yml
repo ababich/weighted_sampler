@@ -4,25 +4,30 @@ stages:
   - test
 
 before_script:
+  - gem update bundler
   - bundle install
 
 ruby2.3:
   image: ruby:2.3
-  script: rspec
+  script: bundle exec rspec
 
 ruby2.4:
   image: ruby:2.4
-  script: rspec
+  script: bundle exec rspec
 
 ruby2.5:
   image: ruby:2.5
-  script: rspec
+  script: bundle exec rspec
 
 ruby2.6:
   image: ruby:2.6
-  script: rspec
+  script: bundle exec rspec
+
+ruby2.7:
+  image: ruby:2.7
+  script: bundle exec rspec
 
 jruby:
   image: jruby
-  script: jruby --debug -S rspec
+  script: bundle exec jruby --debug -S rspec
 
